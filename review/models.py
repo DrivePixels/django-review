@@ -39,7 +39,10 @@ class Review(models.Model):
 
     """
     # GFK 'reviewed_item'
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(
+            ContentType,
+            on_delete=models.CASCADE
+    )
     object_id = models.PositiveIntegerField()
     reviewed_item = fields.GenericForeignKey('content_type', 'object_id')
 
@@ -47,6 +50,7 @@ class Review(models.Model):
         getattr(settings, 'AUTH_USER_MODEL', 'auth.User'),
         verbose_name=_('User'),
         blank=True, null=True,
+        on_delete=models.CASCADE,
     )
 
     content = models.TextField(
@@ -55,8 +59,8 @@ class Review(models.Model):
         blank=True,
     )
 
-    images = fields.GenericRelation(
-        'user_media.UserMediaImage',
+    images = models.ImageField(
+        upload_to='media/'
     )
 
     language = models.CharField(
@@ -79,7 +83,9 @@ class Review(models.Model):
     extra_content_type = models.ForeignKey(
         ContentType,
         related_name='reviews_attached',
-        null=True, blank=True,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
     )
     extra_object_id = models.PositiveIntegerField(null=True, blank=True)
     extra_item = fields.GenericForeignKey(
@@ -229,10 +235,14 @@ class ReviewExtraInfo(models.Model):
     review = models.ForeignKey(
         'review.Review',
         verbose_name=_('Review'),
+        on_delete=models.CASCADE
     )
 
     # GFK 'content_object'
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(
+            ContentType,
+            on_delete=models.CASCADE
+    )
     object_id = models.PositiveIntegerField()
     content_object = fields.GenericForeignKey('content_type', 'object_id')
 
@@ -323,6 +333,7 @@ class RatingCategoryChoice(TranslatableModel):
         RatingCategory,
         verbose_name=_('Rating category'),
         related_name='choices',
+        on_delete=models.CASCADE
     )
 
     value = models.CharField(
@@ -369,11 +380,13 @@ class Rating(models.Model):
         'review.Review',
         verbose_name=_('Review'),
         related_name='ratings',
+        on_delete=models.CASCADE
     )
 
     category = models.ForeignKey(
         'review.RatingCategory',
         verbose_name=_('Category'),
+        on_delete=models.CASCADE
     )
 
     class Meta:
