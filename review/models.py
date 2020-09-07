@@ -60,7 +60,8 @@ class Review(models.Model):
     )
 
     images = models.ImageField(
-        upload_to='media/'
+        upload_to='media/review/',
+        null=True
     )
 
     language = models.CharField(

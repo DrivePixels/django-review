@@ -37,6 +37,7 @@ TEMPLATES = [{
             'django.template.context_processors.request',
             'django.template.context_processors.media',
             'django.template.context_processors.static',
+            'django.contrib.messages.context_processors.messages',
         )
     }
 }]
@@ -53,7 +54,7 @@ EXTERNAL_APPS = [
     'django.contrib.sites',
     'generic_positions',
     'hvad',
-    'user_media',
+    # 'user_media',
     'easy_thumbnails',
 ]
 
@@ -67,6 +68,15 @@ INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
 SECRET_KEY = 'foobar'
 
 MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
+
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
